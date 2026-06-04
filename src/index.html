@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Math Heroes – Fun Math Game for Kids</title>
+    <meta name="description" content="A colorful, kid-friendly math game with Addition, Subtraction and Compare modes.">
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Basic security headers -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data:; font-src https://fonts.gstatic.com;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <div class="header">
+            <button id="home-btn" class="home-btn" type="button" title="Home" hidden>🏠</button>
+            <h1>🦸 Math Heroes</h1>
+        </div>
+
+        <!-- Splash / Start Page -->
+        <div class="card" id="splash-page">
+            <form id="start-form">
+                <!-- Mode Selection -->
+                <p class="picker-title">Pick a game</p>
+                <div class="mode-container" id="mode-container">
+                    <button type="button" class="mode-option selected-mode" data-mode="addition">
+                        <span class="mode-emoji">➕</span>
+                        <span class="mode-name">Addition</span>
+                    </button>
+                    <button type="button" class="mode-option" data-mode="subtraction">
+                        <span class="mode-emoji">➖</span>
+                        <span class="mode-name">Subtraction</span>
+                    </button>
+                    <button type="button" class="mode-option" data-mode="compare">
+                        <span class="mode-emoji">⚖️</span>
+                        <span class="mode-name">Greater or Equal</span>
+                    </button>
+                </div>
+
+                <!-- Difficulty Selection -->
+                <p class="picker-title">Difficulty</p>
+                <div class="level-container" id="level-container">
+                    <button type="button" class="level-option selected-level" data-level="10">Up to 10</button>
+                    <button type="button" class="level-option" data-level="20">Up to 20</button>
+                    <button type="button" class="level-option" data-level="100">Up to 100</button>
+                </div>
+
+                <!-- Question Amount Selection -->
+                <p class="picker-title">How many questions?</p>
+                <div class="amount-container" id="amount-container">
+                    <button type="button" class="amount-option selected-amount" data-amount="5">5</button>
+                    <button type="button" class="amount-option" data-amount="10">10</button>
+                    <button type="button" class="amount-option" data-amount="15">15</button>
+                    <button type="button" class="amount-option" data-amount="20">20</button>
+                </div>
+
+                <p class="best-line">⭐ Best time: <span class="best-line-value">–</span></p>
+
+                <div class="selection-footer">
+                    <button class="start" type="submit">Let's Play! 🚀</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Countdown Page -->
+        <div class="card" id="countdown-page" hidden>
+            <h1 class="countdown"></h1>
+        </div>
+
+        <!-- Game Page -->
+        <div class="card" id="game-page" hidden>
+            <div class="game-stats-bar">
+                <div class="score-pill right-score" id="right-score">⭐ 0</div>
+                <div class="timer-display" id="timer-display">⏱️ 0.0s</div>
+                <div class="score-pill wrong-score" id="wrong-score">💧 0</div>
+            </div>
+
+            <div class="game-content-wrapper">
+                <div class="selected-item"></div>
+                <div class="item-container" id="item-container"></div>
+            </div>
+
+            <!-- Answer options (Addition & Subtraction) -->
+            <div class="item-footer options-footer" id="options-footer" hidden>
+                <button class="option-btn" type="button"></button>
+                <button class="option-btn" type="button"></button>
+                <button class="option-btn" type="button"></button>
+            </div>
+
+            <!-- Sign buttons (Compare mode) -->
+            <div class="item-footer compare-footer" id="compare-footer" hidden>
+                <button class="sign-btn" data-sign="<" type="button">&lt;</button>
+                <button class="sign-btn" data-sign="=" type="button">=</button>
+                <button class="sign-btn" data-sign=">" type="button">&gt;</button>
+            </div>
+        </div>
+
+        <!-- Score Page -->
+        <div class="card" id="score-page" hidden>
+            <div class="score-container">
+                <div class="stars" id="stars">⭐⭐⭐</div>
+                <h1 class="title" id="score-message">Great job!</h1>
+                <h1 class="final-time"></h1>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">Correct</span>
+                        <span class="correct-count"></span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Time</span>
+                        <span class="base-time"></span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Best Time</span>
+                        <span class="best-time"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="score-footer">
+                <button class="home-again score-btn ghost" id="home-again-btn" type="button">Home 🏠</button>
+                <button class="play-again score-btn" id="play-again-btn" type="button">Play Again 🔁</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="shuffle.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

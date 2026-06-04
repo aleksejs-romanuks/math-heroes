@@ -1,0 +1,36 @@
+# OS Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary Files
+*.tmp
+*.bak
+*.sav
+*.old
+~*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment / secrets
+.env
+.env.*
+
+# Build / deploy output
+_site/
+dist/
+build/
+
+# Dependencies (if ever added)
+node_modules/

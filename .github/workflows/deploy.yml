@@ -1,0 +1,63 @@
+# ───────────────────────────────────────────────────────────────
+#  🦸 Math Heroes — Deploy to GitHub Pages
+#  Publishes the static game in "src/" on every push to main.
+# ───────────────────────────────────────────────────────────────
+name: 🚀 Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # allow manual runs from the Actions tab
+
+# Least-privilege permissions required by GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one Pages deployment at a time; let running ones finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # ── Build: stage the static site as an artifact ───────────────
+  build:
+    name: 🛠️ Build site
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: 📦 Stage static files
+        run: |
+          mkdir -p ./_site
+          cp -r "./src/." ./_site/
+          echo "Staged files:"
+          ls -1 ./_site
+
+      - name: ⬆️ Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+  # ── Deploy: publish the artifact to GitHub Pages ──────────────
+  deploy:
+    name: 🌐 Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: 🔗 Output deployed URL
+        run: |
+          echo "🌐 Site deployed to: ${{ steps.deployment.outputs.page_url }}"
+          echo "### 🌐 Site deployed to: [${{ steps.deployment.outputs.page_url }}](${{ steps.deployment.outputs.page_url }})" >> "$GITHUB_STEP_SUMMARY"

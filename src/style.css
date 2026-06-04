@@ -1,0 +1,600 @@
+/*
+  Math Heroes – kid-friendly stylesheet.
+  Bright, rounded and playful.
+*/
+
+:root {
+  --primary: #ff6b9d;
+  --primary-dark: #e23e7a;
+  --blue: #4dabf7;
+  --green: #51cf66;
+  --yellow: #ffd43b;
+  --purple: #9775fa;
+  --danger: #ff6b6b;
+  --success: #37b24d;
+  --ink: #3d3457;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Fredoka', 'Segoe UI', sans-serif;
+}
+
+/* Make sure hidden elements never show, even with display:flex rules. */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  background: linear-gradient(135deg, #a0e7ff 0%, #ffc2e2 50%, #fff3b0 100%);
+}
+
+.game-container {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 4px solid #fff;
+  border-radius: 30px;
+  box-shadow: 0 20px 45px rgba(120, 80, 160, 0.35);
+  width: 530px;
+  max-width: 95%;
+  height: 90vh;
+  max-height: 90vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  position: relative;
+  background: linear-gradient(90deg, var(--primary), var(--purple));
+  color: white;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.15);
+}
+
+.home-btn {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.home-btn:hover {
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateY(-50%) scale(1.06);
+}
+
+/* Cards */
+.card {
+  margin: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+}
+
+/* ---------- Splash Page ---------- */
+#start-form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 20px 0;
+  overflow-y: auto;
+}
+
+.picker-title {
+  text-align: center;
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 12px 0 8px;
+}
+
+.mode-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mode-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  height: 58px;
+  padding: 0 20px;
+  border: 3px solid #e9d8ff;
+  background: white;
+  border-radius: 18px;
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 21px;
+  font-weight: 600;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.mode-option:hover {
+  transform: scale(1.02);
+  border-color: var(--purple);
+}
+
+.mode-option.selected-mode {
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 8px 18px rgba(151, 117, 250, 0.4);
+}
+
+.mode-emoji {
+  font-size: 28px;
+}
+
+/* Difficulty */
+.level-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.level-option {
+  padding: 10px 18px;
+  border-radius: 16px;
+  border: 3px solid #c3fae8;
+  background: white;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.level-option:hover {
+  transform: scale(1.04);
+}
+
+.level-option.selected-level {
+  background: var(--green);
+  border-color: var(--success);
+  color: white;
+  box-shadow: 0 6px 14px rgba(81, 207, 102, 0.5);
+}
+
+/* Question amount */
+.amount-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.amount-option {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid #ffe0b2;
+  background: white;
+  color: var(--ink);
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.amount-option:hover {
+  transform: scale(1.08);
+}
+
+.amount-option.selected-amount {
+  background: var(--yellow);
+  border-color: var(--primary-dark);
+  box-shadow: 0 6px 14px rgba(255, 212, 59, 0.6);
+}
+
+.best-line {
+  text-align: center;
+  font-size: 16px;
+  color: var(--ink);
+  margin: 14px 0 0;
+  font-weight: 500;
+}
+
+.selection-footer {
+  margin-top: auto;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
+}
+
+/* Buttons base */
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  font-family: 'Fredoka', sans-serif;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+.start {
+  width: 90%;
+  height: 56px;
+  border-radius: 18px;
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  box-shadow: 0 8px 18px rgba(226, 62, 122, 0.4);
+}
+
+.start:hover {
+  filter: brightness(1.05);
+  transform: scale(1.02);
+}
+
+/* ---------- Countdown ---------- */
+.countdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 110px;
+  font-weight: 700;
+  color: var(--purple);
+  text-shadow: 0 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.4); opacity: 0; }
+  60% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.pop-in {
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* ---------- Game Page ---------- */
+.game-stats-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 14px auto 0;
+}
+
+.timer-display {
+  background: white;
+  color: var(--ink);
+  font-size: 24px;
+  font-weight: 700;
+  padding: 6px 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.score-pill {
+  font-size: 22px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.right-score { color: var(--success); }
+.wrong-score { color: var(--danger); }
+
+.height-240 { height: 240px; width: 100%; }
+.height-500 { height: 500px; width: 100%; }
+
+.game-content-wrapper {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 240px, rgba(0, 0, 0, 1) 240px, rgba(0, 0, 0, 1) 320px, rgba(0, 0, 0, 0.25) 320px, rgba(0, 0, 0, 0.25) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 240px, rgba(0, 0, 0, 1) 240px, rgba(0, 0, 0, 1) 320px, rgba(0, 0, 0, 0.25) 320px, rgba(0, 0, 0, 0.25) 100%);
+}
+
+.item-container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  touch-action: none;
+  z-index: 2;
+}
+
+.scroll-surface {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  width: 100%;
+  will-change: transform;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 100%;
+}
+
+.item h1 {
+  font-size: 34px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ink);
+}
+
+.item.answered-right h1 { color: var(--success); }
+.item.answered-wrong h1 { color: var(--danger); }
+
+.item-active h1 {
+  color: white !important;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+}
+
+.equation-grid {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.equation-grid .mystery {
+  color: var(--purple);
+}
+
+.item-active .mystery {
+  color: #fff !important;
+}
+
+.selected-item {
+  position: absolute;
+  top: 240px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  border-radius: 16px;
+  z-index: 1;
+}
+
+/* Footer buttons */
+.item-footer {
+  width: 100%;
+  height: 84px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+}
+
+/* Answer options (add / sub) */
+.option-btn {
+  flex: 1;
+  max-width: 130px;
+  height: 60px;
+  border-radius: 18px;
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  box-shadow: 0 6px 14px rgba(77, 171, 247, 0.4);
+}
+
+.option-btn:hover {
+  transform: scale(1.05);
+  filter: brightness(1.05);
+}
+
+/* Compare sign buttons */
+.sign-btn {
+  width: 78px;
+  height: 64px;
+  border-radius: 18px;
+  font-size: 34px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--green), var(--success));
+  box-shadow: 0 6px 14px rgba(81, 207, 102, 0.4);
+}
+
+.sign-btn:hover {
+  transform: scale(1.08);
+  filter: brightness(1.05);
+}
+
+/* Button feedback */
+@keyframes flashGreen {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); box-shadow: 0 0 26px var(--success); }
+  100% { transform: scale(1); }
+}
+
+@keyframes flashRed {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); box-shadow: 0 0 26px var(--danger); }
+  75% { transform: translateX(6px); }
+}
+
+.btn-success-flash {
+  background: var(--success) !important;
+  animation: flashGreen 0.4s ease-out forwards;
+}
+
+.btn-error-flash {
+  background: var(--danger) !important;
+  animation: flashRed 0.4s ease-in-out forwards;
+}
+
+/* Penalty timer shake */
+@keyframes penaltyShake {
+  0%, 100% { transform: translateX(0); color: var(--ink); }
+  25% { transform: translateX(-6px); color: var(--danger); }
+  50% { transform: translateX(6px); color: var(--danger); }
+  75% { transform: translateX(-4px); color: var(--danger); }
+}
+
+.penalty-flash {
+  animation: penaltyShake 0.4s ease-in-out;
+}
+
+/* ---------- Score Page ---------- */
+.score-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.stars {
+  font-size: 56px;
+  margin-bottom: 6px;
+  animation: popIn 0.6s ease;
+}
+
+.score-container .title {
+  color: var(--ink);
+  font-size: 26px;
+  font-weight: 600;
+  margin: 4px 0 6px;
+  text-align: center;
+}
+
+.final-time {
+  font-size: 64px;
+  font-weight: 700;
+  margin: 4px 0 18px;
+  color: var(--primary-dark);
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  width: 95%;
+  flex-wrap: wrap;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  padding: 16px;
+  border-radius: 18px;
+  border: 3px solid #f1e6ff;
+  flex: 1;
+  min-width: 120px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--purple);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.correct-count, .base-time, .best-time {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.best-time { color: var(--success); }
+
+.score-footer {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px 0;
+  flex-wrap: wrap;
+}
+
+.score-btn {
+  height: 56px;
+  padding: 0 26px;
+  border-radius: 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  box-shadow: 0 8px 18px rgba(226, 62, 122, 0.4);
+}
+
+.score-btn:hover {
+  transform: scale(1.03);
+  filter: brightness(1.05);
+}
+
+.score-btn.ghost {
+  background: white;
+  color: var(--primary-dark);
+  border: 3px solid var(--primary);
+  box-shadow: 0 6px 14px rgba(226, 62, 122, 0.2);
+}
+
+/* ---------- Responsive ---------- */
+@media screen and (max-width: 600px) {
+  .game-container {
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+  }
+
+  .header h1 { font-size: 26px; }
+  .countdown { font-size: 90px; }
+  .item h1 { font-size: 28px; }
+  .final-time { font-size: 52px; }
+  .mode-option { height: 54px; font-size: 19px; }
+  .amount-option { width: 52px; height: 52px; font-size: 21px; }
+  .level-option { padding: 9px 14px; font-size: 16px; }
+  .option-btn { font-size: 24px; height: 56px; }
+  .sign-btn { width: 68px; height: 58px; font-size: 30px; }
+}

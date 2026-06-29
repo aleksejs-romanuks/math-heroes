@@ -27,6 +27,8 @@ const countdown = document.querySelector('.countdown');
 
 // Game
 const itemContainer = document.getElementById('item-container');
+const gameContentWrapper = document.getElementById('game-content-wrapper');
+const houseStage = document.getElementById('house-stage');
 const timerDisplay = document.getElementById('timer-display');
 const rightScoreEl = document.getElementById('right-score');
 const wrongScoreEl = document.getElementById('wrong-score');
@@ -51,6 +53,7 @@ let equationsArray = [];
 let playerGuessArray = [];
 let currentEquationIndex = 0;
 let valueY = 0;
+let rowStep = 80;
 
 let rightCount = 0;
 let wrongCount = 0;
@@ -180,6 +183,24 @@ function createEquations() {
         return;
     }
 
+    // Number House: the roof (triangle) is the total, and the two windows are
+    // the parts. One window is shown, the other is missing. e.g. roof 7,
+    // window 3 → the kid finds 4.
+    if (gameMode === 'bonds') {
+        for (let i = 0; i < questionAmount; i++) {
+            const target = 1 + getRandomInt(maxNumber - 1); // 1 .. maxNumber
+            const a = getRandomInt(target);                 // 0 .. target
+            const missing = target - a;
+            const mysteryLeft = Math.random() < 0.5;       // which side the blank is on
+            equationsArray.push({
+                bond: { a, target, mysteryLeft },
+                evaluated: `${missing}`,
+                options: makeOptions(missing, maxNumber),
+            });
+        }
+        return;
+    }
+
     // Addition / Subtraction: show "a ? b = ?" and pick the correct result.
     // Difficulty caps the RESULT (not the operands), so e.g. "Up to 10"
     // allows 8 + 2 but never 8 + 3.
@@ -214,6 +235,12 @@ function equationsToDOM() {
         item.classList.add('item');
         if (index === 0) item.classList.add('item-active');
 
+        if (equation.bond) {
+            item.appendChild(buildHouseBond(equation));
+            scrollSurface.appendChild(item);
+            return;
+        }
+
         const grid = document.createElement('div');
         grid.classList.add('equation-grid');
 
@@ -230,6 +257,11 @@ function equationsToDOM() {
 }
 
 function populateGamePage() {
+    createEquations();
+
+    // House mode uses a standalone centered stage — no scrolling list needed.
+    if (gameMode === 'bonds') return;
+
     itemContainer.textContent = '';
 
     const scrollSurface = document.createElement('div');
@@ -240,12 +272,25 @@ function populateGamePage() {
     topSpacer.classList.add('height-240');
     scrollSurface.appendChild(topSpacer);
 
-    createEquations();
     equationsToDOM();
 
     const bottomSpacer = document.createElement('div');
     bottomSpacer.classList.add('height-500');
     scrollSurface.appendChild(bottomSpacer);
+}
+
+// Render the current house question into the house stage.
+function renderHouseStage() {
+    houseStage.textContent = '';
+    const equation = equationsArray[currentEquationIndex];
+    if (!equation) return;
+
+    const progress = document.createElement('p');
+    progress.classList.add('house-progress');
+    progress.textContent = `${currentEquationIndex + 1} / ${questionAmount}`;
+
+    const houseEl = buildHouseBond(equation);
+    houseStage.append(progress, houseEl);
 }
 
 // Update the answer buttons for the current question (add/sub modes).
@@ -296,19 +341,6 @@ function advance(playerAnswer) {
     const isCorrect = currentEquation.evaluated === playerAnswer;
     playFeedbackSound(isCorrect);
 
-    const itemElements = document.querySelectorAll('.item');
-    const currentItem = itemElements[currentEquationIndex];
-
-    if (currentItem) {
-        currentItem.classList.add(isCorrect ? 'answered-right' : 'answered-wrong');
-        // Reveal the correct value/sign in place of the '?'.
-        const mystery = currentItem.querySelector('.mystery');
-        if (mystery) {
-            mystery.textContent = currentEquation.evaluated;
-            mystery.classList.remove('mystery');
-        }
-    }
-
     if (isCorrect) {
         rightCount++;
         rightScoreEl.textContent = `⭐ ${rightCount}`;
@@ -320,8 +352,44 @@ function advance(playerAnswer) {
         timerDisplay.classList.add('penalty-flash');
     }
 
-    // Scroll to next equation.
-    valueY += 80;
+    // House mode: reveal answer then pause before next question.
+    if (gameMode === 'bonds') {
+        const houseEl = houseStage.querySelector('.house-bond');
+        if (houseEl) {
+            const mystery = houseEl.querySelector('.mystery');
+            if (mystery) {
+                mystery.textContent = currentEquation.evaluated;
+                mystery.classList.remove('mystery');
+            }
+            houseEl.classList.add(isCorrect ? 'answered-right' : 'answered-wrong');
+        }
+        optionButtons.forEach(b => { b.disabled = true; });
+        playerGuessArray.push(playerAnswer);
+        currentEquationIndex++;
+        setTimeout(() => {
+            optionButtons.forEach(b => { b.disabled = false; });
+            if (playerGuessArray.length < questionAmount) {
+                renderHouseStage();
+                renderOptions();
+            }
+            checkFinished();
+        }, 700);
+        return;
+    }
+
+    // Scrolling modes: reveal answer and scroll to next.
+    const itemElements = document.querySelectorAll('.item');
+    const currentItem = itemElements[currentEquationIndex];
+    if (currentItem) {
+        currentItem.classList.add(isCorrect ? 'answered-right' : 'answered-wrong');
+        const mystery = currentItem.querySelector('.mystery');
+        if (mystery) {
+            mystery.textContent = currentEquation.evaluated;
+            mystery.classList.remove('mystery');
+        }
+    }
+
+    valueY += rowStep;
     const scrollSurface = document.querySelector('.scroll-surface');
     if (scrollSurface) scrollSurface.style.transform = `translateY(-${valueY}px)`;
 
@@ -445,6 +513,14 @@ function showGamePage() {
     gamePage.hidden = false;
     countdownPage.hidden = true;
 
+    const isHouse = gameMode === 'bonds';
+    gameContentWrapper.hidden = isHouse;
+    houseStage.hidden = !isHouse;
+
+    if (isHouse) {
+        renderHouseStage();
+    }
+
     // Show the right controls for the chosen mode.
     if (gameMode === 'compare') {
         optionsFooter.hidden = true;
@@ -456,8 +532,10 @@ function showGamePage() {
     }
 
     valueY = 0;
-    const scrollSurface = document.querySelector('.scroll-surface');
-    if (scrollSurface) scrollSurface.style.transform = 'translateY(0px)';
+    if (!isHouse) {
+        const scrollSurface = document.querySelector('.scroll-surface');
+        if (scrollSurface) scrollSurface.style.transform = 'translateY(0px)';
+    }
 
     rightCount = 0;
     wrongCount = 0;

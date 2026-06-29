@@ -318,8 +318,13 @@ button:active {
 .right-score { color: var(--success); }
 .wrong-score { color: var(--danger); }
 
-.height-240 { height: 240px; width: 100%; }
-.height-500 { height: 500px; width: 100%; }
+/* Row height drives the whole scrolling layout (spacers, highlight band,
+   mask and scroll step). House mode uses a taller row. */
+#game-page { --row-h: 80px; }
+#game-page.house-rows { --row-h: 220px; }
+
+.height-240 { height: calc(var(--row-h) * 3); width: 100%; }
+.height-500 { height: calc(var(--row-h) * 7); width: 100%; }
 
 .game-content-wrapper {
   flex: 1;
@@ -328,8 +333,8 @@ button:active {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 240px, rgba(0, 0, 0, 1) 240px, rgba(0, 0, 0, 1) 320px, rgba(0, 0, 0, 0.25) 320px, rgba(0, 0, 0, 0.25) 100%);
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) 240px, rgba(0, 0, 0, 1) 240px, rgba(0, 0, 0, 1) 320px, rgba(0, 0, 0, 0.25) 320px, rgba(0, 0, 0, 0.25) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) calc(var(--row-h) * 3), rgba(0, 0, 0, 1) calc(var(--row-h) * 3), rgba(0, 0, 0, 1) calc(var(--row-h) * 4), rgba(0, 0, 0, 0.25) calc(var(--row-h) * 4), rgba(0, 0, 0, 0.25) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.25) calc(var(--row-h) * 3), rgba(0, 0, 0, 1) calc(var(--row-h) * 3), rgba(0, 0, 0, 1) calc(var(--row-h) * 4), rgba(0, 0, 0, 0.25) calc(var(--row-h) * 4), rgba(0, 0, 0, 0.25) 100%);
 }
 
 .item-container {
@@ -351,7 +356,7 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 80px;
+  height: var(--row-h);
   width: 100%;
 }
 
@@ -385,12 +390,100 @@ button:active {
   color: #fff !important;
 }
 
+/* Number House – standalone stage (one question at a time) */
+#house-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+
+.house-progress {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--purple);
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* Number House */
+.house-bond {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease;
+}
+
+.house-roof {
+  width: 360px;
+  height: 102px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: linear-gradient(135deg, #ff8fb3, var(--primary-dark));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  color: #fff;
+  font-size: 54px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.house-roof span {
+  margin-bottom: 8px;
+}
+
+.house-body {
+  display: flex;
+  width: 312px;
+  height: 126px;
+  border-radius: 0 0 24px 24px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+.house-num {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #74c0fc, var(--blue));
+}
+
+.house-num.mystery {
+  background: linear-gradient(135deg, #ffe066, #fcc419);
+  color: #fff;
+}
+
+/* Divider between the two windows, always in the centre */
+.house-body .house-num + .house-num {
+  border-left: 3px solid rgba(255, 255, 255, 0.7);
+}
+
+/* Reveal feedback on the whole house */
+.house-bond.answered-right .house-roof {
+  background: linear-gradient(135deg, #69db7c, var(--success));
+}
+.house-bond.answered-right .house-num {
+  background: linear-gradient(135deg, #69db7c, var(--success));
+}
+.house-bond.answered-wrong .house-roof {
+  background: linear-gradient(135deg, #ff8787, var(--danger));
+}
+.house-bond.answered-wrong .house-num {
+  background: linear-gradient(135deg, #ff8787, var(--danger));
+}
+
 .selected-item {
   position: absolute;
-  top: 240px;
+  top: calc(var(--row-h) * 3);
   left: 0;
   width: 100%;
-  height: 80px;
+  height: var(--row-h);
   background: linear-gradient(90deg, var(--blue), var(--purple));
   border-radius: 16px;
   z-index: 1;

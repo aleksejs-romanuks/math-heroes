@@ -44,6 +44,10 @@
                         <span class="mode-emoji">⚖️</span>
                         <span class="mode-name">Greater or Equal</span>
                     </button>
+                    <button type="button" class="mode-option" data-mode="bonds">
+                        <span class="mode-emoji">🏠</span>
+                        <span class="mode-name">Number House</span>
+                    </button>
                 </div>
 
                 <!-- Difficulty Selection -->
@@ -84,10 +88,13 @@
                 <div class="score-pill wrong-score" id="wrong-score">💧 0</div>
             </div>
 
-            <div class="game-content-wrapper">
+            <div class="game-content-wrapper" id="game-content-wrapper">
                 <div class="selected-item"></div>
                 <div class="item-container" id="item-container"></div>
             </div>
+
+            <!-- House stage (Number House mode only) -->
+            <div id="house-stage" hidden></div>
 
             <!-- Answer options (Addition & Subtraction) -->
             <div class="item-footer options-footer" id="options-footer" hidden>
@@ -133,6 +140,7 @@
     </div>
 
     <script src="shuffle.js"></script>
+    <script src="house.js"></script>
     <script src="script.js"></script>
 </body>
 

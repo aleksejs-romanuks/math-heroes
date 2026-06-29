@@ -10,6 +10,7 @@ race a friendly timer, and earn stars!
 | ➕ **Addition** | A question like `3 + 4 = ?` appears. Tap the correct answer out of 3 choices. |
 | ➖ **Subtraction** | A question like `8 − 3 = ?` appears. Tap the correct answer out of 3 choices. |
 | ⚖️ **Greater or Equal** | Two numbers appear like `7 ? 4`. Tap the right sign: **<**, **=** or **>**. |
+| 🏠 **Number House** | A house with a triangular roof shows the total. One window has a number, the other is blank. Tap the missing number to complete the bond. |
 
 Before playing, kids also choose:
 
@@ -30,7 +31,7 @@ A 🏠 home button is always available to jump back to the menu.
 No build step or dependencies. Just open the game:
 
 ```bash
-cd "src"
+cd src
 # Open index.html in your browser, or serve it locally:
 python3 -m http.server 8000
 # then visit http://localhost:8000
@@ -41,7 +42,8 @@ python3 -m http.server 8000
 ```
 src/
   index.html   # Game layout and pages
-  script.js    # Game logic and the three modes
+  script.js    # Game logic (all four modes)
+  house.js     # Number House rendering (roof + two windows)
   shuffle.js   # Array shuffle helper
   style.css    # Kid-friendly styling
   logo.png
